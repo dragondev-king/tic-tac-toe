@@ -1,4 +1,6 @@
 import React from 'react'
+
+import { calculatorWinner } from './utils'
 import './App.css';
 
 function Square(props)  {
@@ -19,6 +21,7 @@ class Board extends React.Component {
   }
   handleClick(i) {
     const squares = this.state.squares.slice()
+    if(calculatorWinner(this.state.squares) || squares[i]) return
     squares[i] = this.state.xIsNext ? 'X' : 'O'
     this.setState({squares: squares, xIsNext: !this.state.xIsNext})
   }
@@ -27,7 +30,13 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = `Next player: ${this.state.xIsNext ?  'X': 'O'}`;
+    const winner = calculatorWinner(this.state.squares)
+    let status
+    if(winner) {
+      status = `winner: ${winner}`
+    } else {
+      status = `Next player: ${this.state.xIsNext ?  'X': 'O'}`;
+    }
 
     return (
       <div>
